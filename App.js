@@ -1,72 +1,50 @@
-import {
-  View,
-  StyleSheet,
-  SafeAreaView,
-  Platform,
-  ScrollView,
-} from "react-native";
-import PokimonCrad from "./components/pokemoncard/PokimonCard";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Pressable, Text, View } from "react-native";
+import HomeScreen from "./screens/HomeScreen";
+import AboutScreen from "./screens/AboutScreen";
+
+const Stack = createNativeStackNavigator();
 
 const App = () => {
-  const data = [
-    {
-      name: "911 Special Edition",
-      Model: "2021",
-      image: require("./assets/porsche-1.jpg"),
-      type: "fire",
-      topSpeed: 250,
-      colors: ["red", "green", "gray", "yellow"],
-    },
-    {
-      name: "Boxter",
-      Model: "2022",
-      image: require("./assets/porsche-2.jpeg"),
-      type: "water",
-      topSpeed: 230,
-      colors: ["red", "green", "yellow"],
-    },
-    {
-      name: "Carrera",
-      Model: "2023",
-      image: require("./assets/porsche-3.jpeg"),
-      type: "fire",
-      topSpeed: 260,
-      colors: ["red", "green", "gray", "yellow","blue","purple","black"],
-    },
-    {
-      name: "Cayenne",
-      Model: "2020",
-      image: require("./assets/porsche-4.jpeg"),
-      type: "grass",
-      topSpeed: 200,
-      colors: ["yellow","red", "green", "blue", "white","black"],
-    },
-    {
-      name: "Taycan",
-      Model: "2022",
-      image: require("./assets/porsche-5.jpeg"),
-      type: "electric",
-      topSpeed: 280,
-      colors: ["black","red", "green", "gray", "yellow"],
-    },
-  ];
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-        {data.map((item, ind) => (
-          <PokimonCrad data={item} key={ind} />
-        ))}
-      </ScrollView>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: "#6a51ae",
+          },
+          headerTintColor: "#fff",
+          headerTitleStyle: { fontWeight: "bold" },
+          headerRight: () => (
+            <Pressable onPress={() => alert("Menu button Pressed")}>
+              <Text style={{ color: "white", fontSize: 16 }}>Menu</Text>
+            </Pressable>
+          ),
+          contentStyle: {
+            backgroundColor: "#e8e4f3",
+          },
+        }}
+      >
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            title: "Welcome Home",
+          }}
+        />
+        <Stack.Screen
+          name="About"
+          component={AboutScreen}
+          initialParams={{ name: "MUNEES" }}
+          // options={({ route }) => ({
+          //   title: route.params.name,
+          // })}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
 export default App;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f5f5f5",
-    paddingTop: Platform.OS === "android" ? 50 : 0,
-  },
-});
